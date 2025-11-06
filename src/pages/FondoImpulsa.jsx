@@ -1,16 +1,32 @@
 import { useState } from 'react';
 import { Heart, Trophy, TrendingUp, Users, DollarSign, Calendar, Target, Award } from 'lucide-react';
 import { mockFondoImpulsa } from '../data/mockData';
+import Modal from '../components/Modal';
 
 export default function FondoImpulsa() {
   const [candidates, setCandidates] = useState(mockFondoImpulsa);
   const [voted, setVoted] = useState([]);
   const [activeTab, setActiveTab] = useState('candidatos'); // candidatos | como-funciona | ganadores
+  const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'info' });
 
   const handleVote = (id) => {
-    if (voted.includes(id)) return alert('Ya votaste por este candidato');
+    if (voted.includes(id)) {
+      setModal({
+        isOpen: true,
+        title: 'Ya votaste',
+        message: 'Ya has votado por este candidato. Solo puedes votar una vez por cada proyecto.',
+        type: 'warning'
+      });
+      return;
+    }
     setCandidates(prev => prev.map(c => c.id === id ? { ...c, votes: c.votes + 1 } : c));
     setVoted([...voted, id]);
+    setModal({
+      isOpen: true,
+      title: '¡Voto registrado!',
+      message: 'Gracias por apoyar a este emprendedor. Tu voto ha sido contabilizado exitosamente.',
+      type: 'success'
+    });
   };
 
   return (
@@ -463,6 +479,15 @@ export default function FondoImpulsa() {
           </div>
         )}
       </div>
+
+      {/* Modal */}
+      <Modal
+        isOpen={modal.isOpen}
+        onClose={() => setModal({ ...modal, isOpen: false })}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+      />
     </div>
   );
 }

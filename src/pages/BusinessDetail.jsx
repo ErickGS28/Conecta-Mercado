@@ -3,10 +3,22 @@ import { useParams, Link } from 'react-router-dom';
 import { Store, MapPin, Phone, Mail, Star, ArrowLeft, TrendingUp, Package, Users } from 'lucide-react';
 import { mockProducts, mockBusinesses } from '../data/mockData';
 import ProductCard from '../components/ProductCard';
+import Modal from '../components/Modal';
 
 export default function BusinessDetail({ addToCart }) {
   const { id } = useParams();
   const business = mockBusinesses.find(b => b.id === parseInt(id));
+  const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'info' });
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    setModal({
+      isOpen: true,
+      title: '¡Agregado al carrito!',
+      message: `${product.name} agregado al carrito exitosamente.`,
+      type: 'success'
+    });
+  };
 
   if (!business) {
     return (
@@ -193,7 +205,7 @@ export default function BusinessDetail({ addToCart }) {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  onAddToCart={addToCart}
+                  onAddToCart={handleAddToCart}
                 />
               ))}
             </div>
@@ -205,6 +217,15 @@ export default function BusinessDetail({ addToCart }) {
           )}
         </section>
       </div>
+
+      {/* Modal */}
+      <Modal
+        isOpen={modal.isOpen}
+        onClose={() => setModal({ ...modal, isOpen: false })}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+      />
     </div>
   );
 }

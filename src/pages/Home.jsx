@@ -2,10 +2,22 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Star, Truck, Shield, CreditCard, TrendingUp } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+import Modal from '../components/Modal';
 import { mockProducts, mockCategories } from '../data/mockData';
 
 export default function Home({ addToCart }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'info' });
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    setModal({
+      isOpen: true,
+      title: '¡Agregado al carrito!',
+      message: `${product.name} agregado al carrito exitosamente.`,
+      type: 'success'
+    });
+  };
 
   const filteredProducts = selectedCategory === 'all'
     ? mockProducts
@@ -164,7 +176,7 @@ export default function Home({ addToCart }) {
               <ProductCard
                 key={product.id}
                 product={product}
-                onAddToCart={addToCart}
+                onAddToCart={handleAddToCart}
               />
             ))}
           </div>
@@ -212,6 +224,15 @@ export default function Home({ addToCart }) {
           </div>
         </section>
       </div>
+
+      {/* Modal */}
+      <Modal
+        isOpen={modal.isOpen}
+        onClose={() => setModal({ ...modal, isOpen: false })}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+      />
     </div>
   );
 }

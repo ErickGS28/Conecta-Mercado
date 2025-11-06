@@ -1,11 +1,33 @@
+import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Modal from '../components/Modal';
 
 export default function Cart({ cart, updateQuantity, removeFromCart }) {
+  const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'info', onConfirm: null });
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const commission = subtotal * 0.08;
   const fondoImpulsa = subtotal * 0.01;
   const total = subtotal + commission + fondoImpulsa;
+
+  const handleRemove = (id, name) => {
+    setModal({
+      isOpen: true,
+      title: '¿Eliminar producto?',
+      message: `¿Estás seguro de que quieres eliminar "${name}" del carrito?`,
+      type: 'confirm',
+      onConfirm: () => removeFromCart(id)
+    });
+  };
+
+  const handleCheckout = () => {
+    setModal({
+      isOpen: true,
+      title: 'Proyecto Demo',
+      message: 'Esta es una simulación de pago. En un proyecto real, aquí se procesaría el pago con tu método preferido.',
+      type: 'info'
+    });
+  };
 
   if (cart.length === 0) {
     return (
@@ -45,7 +67,7 @@ export default function Cart({ cart, updateQuantity, removeFromCart }) {
                     <span className="px-3">{item.quantity}</span>
                     <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="px-2 py-1 hover:bg-gray-100">+</button>
                   </div>
-                  <button onClick={() => removeFromCart(item.id)} className="text-red-500 hover:text-red-700 p-2">
+                  <button onClick={() => handleRemove(item.id, item.name)} className="text-red-500 hover:text-red-700 p-2">
                     <Trash2 size={18} />
                   </button>
                 </div>
@@ -69,7 +91,7 @@ export default function Cart({ cart, updateQuantity, removeFromCart }) {
               <span>Total:</span><span>${total.toFixed(2)}</span>
             </div>
 
-            <button onClick={() => alert('Pago simulado - Proyecto demo')} className="w-full bg-[#0D3C61] text-white py-3 rounded-lg font-semibold hover:bg-[#0A2E4A] transition">
+            <button onClick={handleCheckout} className="w-full bg-[#0D3C61] text-white py-3 rounded-lg font-semibold hover:bg-[#0A2E4A] transition">
               Proceder al Pago
             </button>
 
@@ -79,6 +101,16 @@ export default function Cart({ cart, updateQuantity, removeFromCart }) {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      <Modal
+        isOpen={modal.isOpen}
+        onClose={() => setModal({ ...modal, isOpen: false })}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+        onConfirm={modal.onConfirm}
+      />
     </div>
   );
 }

@@ -38,7 +38,7 @@ function App() {
     } else {
       setCart([...cart, { ...product, quantity: 1 }]);
     }
-    alert(`${product.name} agregado al carrito`);
+    // Modal será manejado por el componente que llama a addToCart
   };
 
   const updateQuantity = (id, newQuantity) => {

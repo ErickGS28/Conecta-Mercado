@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ShoppingCart, Heart, Star, Truck, Shield, ArrowLeft, Store } from 'lucide-react';
 import { mockProducts } from '../data/mockData';
 import ProductCard from '../components/ProductCard';
+import Modal from '../components/Modal';
 
 export default function ProductDetail({ addToCart }) {
   const { id } = useParams();
@@ -10,6 +11,7 @@ export default function ProductDetail({ addToCart }) {
   const [quantity, setQuantity] = useState(1);
   const [isLiked, setIsLiked] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'info' });
 
   if (!product) {
     return (
@@ -31,7 +33,12 @@ export default function ProductDetail({ addToCart }) {
     for (let i = 0; i < quantity; i++) {
       addToCart(product);
     }
-    alert(`${quantity} ${product.name} agregado(s) al carrito`);
+    setModal({
+      isOpen: true,
+      title: '¡Agregado al carrito!',
+      message: `${quantity} ${product.name} agregado(s) al carrito exitosamente.`,
+      type: 'success'
+    });
   };
 
   // Imágenes simuladas (en un caso real vendrían del producto)
@@ -257,6 +264,15 @@ export default function ProductDetail({ addToCart }) {
           </section>
         )}
       </div>
+
+      {/* Modal */}
+      <Modal
+        isOpen={modal.isOpen}
+        onClose={() => setModal({ ...modal, isOpen: false })}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+      />
     </div>
   );
 }

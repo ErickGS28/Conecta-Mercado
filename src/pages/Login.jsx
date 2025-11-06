@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { mockUsers } from '../data/mockData';
+import Modal from '../components/Modal';
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [modal, setModal] = useState({ isOpen: false, title: '', message: '', type: 'info' });
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -15,7 +17,12 @@ export default function Login({ onLogin }) {
       onLogin(user);
       navigate(user.role === 'entrepreneur' ? '/dashboard' : '/');
     } else {
-      alert('Credenciales incorrectas. Usa: emprendedor@test.com / 123456');
+      setModal({
+        isOpen: true,
+        title: 'Credenciales incorrectas',
+        message: 'Por favor verifica tus credenciales. Puedes usar las credenciales de prueba que aparecen abajo.',
+        type: 'error'
+      });
     }
   };
 
@@ -63,6 +70,15 @@ export default function Login({ onLogin }) {
           <p>Cliente: cliente@test.com / 123456</p>
         </div>
       </div>
+
+      {/* Modal */}
+      <Modal
+        isOpen={modal.isOpen}
+        onClose={() => setModal({ ...modal, isOpen: false })}
+        title={modal.title}
+        message={modal.message}
+        type={modal.type}
+      />
     </div>
   );
 }
