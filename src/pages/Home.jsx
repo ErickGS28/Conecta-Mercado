@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Star, Truck, Shield, CreditCard, TrendingUp } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import Modal from '../components/Modal';
+import FilterBar from '../components/FilterBar';
 import { mockProducts, mockCategories } from '../data/mockData';
 
 export default function Home({ addToCart }) {
@@ -19,9 +20,15 @@ export default function Home({ addToCart }) {
     });
   };
 
-  const filteredProducts = selectedCategory === 'all'
+  const filteredProducts = (selectedCategory === 'all'
     ? mockProducts
-    : mockProducts.filter(p => p.category === selectedCategory);
+    : mockProducts.filter(p => p.category === selectedCategory))
+    .sort((a, b) => {
+      // Mostrar productos destacados primero
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      return 0;
+    });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -119,40 +126,9 @@ export default function Home({ addToCart }) {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        {/* Categories */}
-        <section className="mb-12" id="productos">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#0D3C61] mb-3">Explora por Categoría</h2>
-            <p className="text-gray-600 text-lg">Encuentra exactamente lo que buscas</p>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-3">
-            <button
-              onClick={() => setSelectedCategory('all')}
-              className={`px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105 ${
-                selectedCategory === 'all'
-                  ? 'bg-gradient-to-r from-[#0D3C61] to-[#00A6B3] text-white shadow-lg'
-                  : 'bg-white border-2 border-gray-200 text-gray-700 hover:border-[#00A6B3]'
-              }`}
-            >
-              Todas
-            </button>
-            {mockCategories.map(cat => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.slug)}
-                className={`px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105 ${
-                  selectedCategory === cat.slug
-                    ? 'bg-gradient-to-r from-[#0D3C61] to-[#00A6B3] text-white shadow-lg'
-                    : 'bg-white border-2 border-gray-200 text-gray-700 hover:border-[#00A6B3]'
-                }`}
-              >
-                {cat.icon} {cat.name}
-              </button>
-            ))}
-          </div>
-        </section>
+      <div className="max-w-7xl mx-auto px-4 py-12" id="productos">
+        {/* FilterBar con botón Todo y Paquetes */}
+        <FilterBar onFilterChange={setSelectedCategory} activeFilter={selectedCategory} />
 
         {/* Products */}
         <section>

@@ -33,12 +33,17 @@ export default function ProductCard({ product, onAddToCart }) {
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
+          {product.featured && (
+            <span className="bg-amber-400 text-amber-900 text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+              ⭐ Destacado
+            </span>
+          )}
           {product.isCollaboration && (
             <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
               🤝 Colaboración
             </span>
           )}
-          {product.rating >= 4.8 && (
+          {product.rating >= 4.8 && !product.featured && (
             <span className="bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
               ⭐ Top Rated
             </span>

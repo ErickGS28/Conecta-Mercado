@@ -155,7 +155,7 @@ export default function FondoImpulsa() {
             <div className="bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl p-8 text-center shadow-xl">
               <div className="flex items-center justify-center gap-2 mb-3">
                 <Calendar className="w-6 h-6" />
-                <span className="text-lg font-semibold">Votación en Curso - Periodo 2024-H2</span>
+                <span className="text-lg font-semibold">Votación en Curso - Periodo 2025-H2</span>
               </div>
               <p className="text-4xl font-bold mb-2">45 días restantes</p>
               <p className="text-lg opacity-90">para cerrar la votación</p>

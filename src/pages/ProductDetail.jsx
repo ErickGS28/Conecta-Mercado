@@ -41,8 +41,15 @@ export default function ProductDetail({ addToCart }) {
     });
   };
 
-  // Imágenes simuladas (en un caso real vendrían del producto)
-  const images = [product.image, product.image, product.image];
+  // Imágenes del producto - si es de Cuadernos Reciclados, usar las 4 imágenes
+  const images = product.businessName === "Cuadernos Reciclados"
+    ? [
+        '/products/cuaderno-personalizado.png',
+        '/products/cuaderno-abierto-rayado.png',
+        '/products/cuaderno-abierto-blanco.png',
+        '/products/cuaderno-sencillo.png'
+      ]
+    : [product.image, product.image, product.image];
 
   return (
     <div className="min-h-screen bg-gray-50">

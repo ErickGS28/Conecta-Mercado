@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import FondoImpulsa from './pages/FondoImpulsa';
 import ProductDetail from './pages/ProductDetail';
 import BusinessDetail from './pages/BusinessDetail';
+import Packages from './pages/Packages';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -74,6 +75,7 @@ function App() {
           <Route path="/" element={<Home addToCart={addToCart} />} />
           <Route path="/product/:id" element={<ProductDetail addToCart={addToCart} />} />
           <Route path="/business/:id" element={<BusinessDetail addToCart={addToCart} />} />
+          <Route path="/paquetes" element={<Packages addToCart={addToCart} />} />
           <Route
             path="/cart"
             element={

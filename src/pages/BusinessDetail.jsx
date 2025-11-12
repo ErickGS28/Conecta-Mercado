@@ -115,7 +115,7 @@ export default function BusinessDetail({ addToCart }) {
                     <MapPin className="text-[#00A6B3] flex-shrink-0" size={20} />
                     <div>
                       <div className="text-xs text-gray-600">Ubicación</div>
-                      <div className="font-semibold">Ciudad de México, MX</div>
+                      <div className="font-semibold">Cuernavaca, Morelos</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
